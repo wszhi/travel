@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+	<constant name="struts.devMode" value="false" />
+    <constant name="struts.enable.SlashesInActionNames" value="true"/>
+    <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
+
+    <constant name="struts.i18n.encoding" value="UTF-8"></constant>
+    <!-- 默认Structs2的请求后缀是.action,也就是说我们不配置该元素，.action .do都可以就为action,do -->
+    <constant name="struts.action.extension" value="do"></constant>
+	<!-- 设置浏览器是否缓存静态内容   建议开发时关闭，以免修改后测试不到-->
+	<constant name="struts.serve.static.browserCache" value="false"></constant>
+	<!--当structs配置文件 xml修改后是否自动重新加载文件，默认为true -->
+	<constant name="struts.configuration.xml.reload" value="true"></constant>
+	<!-- 开发模式下。可以打印出更加详细的错误 -->
+	<constant name="struts.devMode" value="true"></constant>
+	<!-- 默认视图主题 -->
+	<constant name="struts.ui.theme" value="simple"></constant>
+	<constant name="struts.ui.templateDir" value="template"></constant>
+	<constant name="struts.ui.templateSuffix" value="ftl"></constant>
+	<!-- 所有的Action定义都应该放在package下 -->	
+	<package name="default" namespace="/" extends="struts-default">
+	<action  name="login" class="LoginAction">
+			<!-- 定义三个逻辑视图和物理资源之间的映射 -->
+			<result name="success">/record.jsp</result>
+			<result name="error">/fail.jsp</result>
+		</action>
+		
+		<action name="insert" class="com.three.action.ReimburseAction" method="insertReimburse">
+			<!-- 定义三个逻辑视图和物理资源之间的映射 -->
+			<result name="success" >/index.jsp</result>
+		</action>
+
+<action name="see" class="com.three.action.ReimburseAction" method="queryReimburse">
+			<result name="success">/table_list.jsp</result>
+		</action>
+		<action name="reimburse/*" class="com.three.action.ReimburseAction" method="queryReimburseInfor">
+		    <param name="reimburse.reimburse_id">{1}</param>
+			<result name="success1">/see_apply_reimburse.jsp</result>
+			<result name="success2">/Update_apply_reimburse.jsp</result>
+		</action>
+		
+		<action name="update" class="com.three.action.ReimburseAction" method="UpdateReimburse">
+			<result name="success" type="chain">reimburse/*</result>
+		</action>
+		
+		
+		<action name="apply_travel" class="com.three.action.TriptabAction" method="insertTriptab">
+			<result name="success">/index.jsp</result>
+		</action>
+		
+		<action name="triptab/*" class="com.three.action.TriptabAction" method="queryTriptabInfor">
+		    <param name="triptab.travel_id">{1}</param>
+			<result name="success1">/see_apply_travel.jsp</result>
+			<result name="success2">/Update_apply_triptab.jsp</result>
+		</action>
+		
+		<action name="see2" class="com.three.action.TriptabAction" method="queryTriptab">
+			<result name="success">/Triptable_list.jsp</result>
+		</action>
+		
+		<action name="update_apply_travel" class="com.three.action.TriptabAction" method="UpdateTriptab">
+			<result name="success" type="chain">triptab/*</result>
+		</action>
+		
+		<action name="insertInfor" class="com.three.action.EmployeeInforAction" method="insertEmployeeInfor">
+			<result name="success" type="chain">employeeinfor/*</result>
+		</action>
+		<action name="employeeinfor/*" class="com.three.action.EmployeeInforAction" method="queryEmployeeInfor">
+		    <param name="employee.employee_id">{1}</param>
+			<result name="success1">/see_employee_info.jsp</result>
+			<result name="success2">/Update_employee_info.jsp</result>
+		</action>
+		<action name="updateinfor" class="com.three.action.EmployeeInforAction" method="UpdateEmployeeInfor">
+			<result name="success" type="chain">employeeinfor/*</result>
+		</action>
+		
+		<action name="triptab" class="ViewTriptabAction">
+		   	<result name="success">/findapply_travel.jsp</result>
+			<result name="error">/fail.jsp</result>
+		</action>
+		<action name="budget" class="ViewBudgetAction">
+		    <result name="success">/budget.jsp</result>
+		    <result name="error">/fail.jsp</result>
+		</action>
+		<action name="dealBudget" class="DealBudgetAction">
+		    <result name="success">/record.jsp</result>
+		    <result name="update">/budget.jsp</result>
+		</action>
+		<action name="reimburse" class="ViewReimburseAction">
+		    <result name="success">/reimburserecord.jsp</result>
+		    <result name="update">/budget.jsp</result>
+		</action>
+		<action name="backreimburse" class="BackViewReimburseAction">
+		    <result name="success">/reimburserecord.jsp</result>
+		    <result name="error">/error.jsp</result>
+		</action>
+		<action name="reimbursedetail" class="ViewDetailAction">
+		    <result name="success">/find_reimburse.jsp</result>
+		    <result name="update">/budget.jsp</result>
+		</action>
+		<action name="finance" class="ViewFinanceAction">
+		    <result name="success">/financerecord.jsp</result>
+		    <result name="update">/budget.jsp</result>
+		</action>
+		<action name="search" class="SearchFinanceAction">
+		    <result name="success">/searchrecord.jsp</result>
+		    <result name="update">/budget.jsp</result>
+		</action>
+		<action name="searchfor" class="SearchForFinanceAction">
+		    <result name="success">/searchrecord.jsp</result>
+		    <result name="update">/budget.jsp</result>
+		</action>
+		<action name="searchtriptab" class="SearchTriptabAction">
+		    <result name="success">/searchtriptab.jsp</result>
+		    <result name="update">/budget.jsp</result>
+		</action>
+		<action name="searchreimburse" class="SearchReimburseAction">
+		    <result name="success">/searchreimburse.jsp</result>
+		    <result name="update">/budget.jsp</result>
+		</action>
+		<action name="searchfinance" class="SearchTimeFinanceAction">
+		    <result name="success">/financerecord.jsp</result>
+		    <result name="update">/budget.jsp</result>
+		</action>
+		
+		<action name="manager" class="Action.TriptabAction" method="seeapply">
+			<result name="success">/manager.jsp</result>
+	</action>
+	 <action name="findall" class="Action.TriptabAction" method="findapply">
+			<result name="success">/findall.jsp</result>
+	</action>
+	
+	<action name="update1" class="Action.TriptabAction" method="updateapply">
+	      <result type="chain">findall</result>
+		
+	</action>
+	
+    <action name="baoxiao" class="Action.ReimburseAction" method="seereimb">
+			<result name="success">/baoxiao.jsp</result>
+	</action>
+	
+	 <action name="bxfindall" class="Action.ReimburseAction" method="findreimb">
+			<result name="success">/bxfindall.jsp</result>
+	 </action>
+			
+	<action name="update2" class="Action.ReimburseAction" method="updatereimb">
+	       <result name="success" type="chain">bxfindall</result>
+	</action>
+		<action name="*">
+			<result>/{1}.jsp</result>
+		</action>
+	</package>
+</struts>

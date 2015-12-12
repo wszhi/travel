@@ -1,0 +1,12 @@
+eclipse.preferences.version=1
+encoding//src/PgBaseDao/BaseDao.java=UTF-8
+encoding//src/com/lds/action/DealBudgetAction.java=UTF-8
+encoding//src/com/lds/action/ViewTriptabAction.java=UTF-8
+encoding//src/com/lds/dao/impl/BaseImpl.java=UTF-8
+encoding//src/com/test/TestHibernate.java=UTF-8
+encoding//src/com/three/dao/BaseDao.java=UTF-8
+encoding//webRoot/common.jsp=UTF-8
+encoding//webRoot/common_employee.jsp=UTF-8
+encoding//webRoot/common_finance.jsp=UTF-8
+encoding//webRoot/common_manager.jsp=UTF-8
+encoding//webRoot/iindex.jsp=UTF-8

@@ -1,0 +1,241 @@
+<?xml  version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:jee="http://www.springframework.org/schema/jee"
+    xmlns:lang="http://www.springframework.org/schema/lang"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+        http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+    
+    <!-- This bean has been referred fron struts.xml file; So type it correctly; -->
+    <bean name="reimburseAction" class="com.three.action.ReimburseAction" scope="prototype">
+	     <property name="apply_Reimburse">
+	        <ref bean="apply_Reimburse"/>
+	     </property>
+    </bean>
+    
+    <bean id="reimburseDao2" class="com.three.dao.impl.ReimburseDaoImpl">
+    </bean>
+    
+    <bean id="apply_Reimburse" class="com.three.domain.impl.Apply_ReimburseImpl">
+        <property name="reimburseDao2" ref="reimburseDao2"/>
+    </bean>
+    
+    <bean name="triptabAction" class="com.three.action.TriptabAction" scope="prototype">
+	     <property name="apply_Triptab">
+	        <ref bean="apply_Triptab"/>
+	     </property>
+    </bean>
+    
+    <bean id="triptabDao" class="com.three.dao.impl.TriptabDaoImpl">
+    </bean>
+    
+    <bean id="apply_Triptab" class="com.three.domain.impl.Apply_TriptabImpl">
+        <property name="triptabDao" ref="triptabDao"/>
+    </bean>
+    
+    <bean name="employeeInforAction" class="com.three.action.EmployeeInforAction" scope="prototype">
+	     <property name="employeeInfor">
+	        <ref bean="employeeInfor"/>
+	     </property>
+    </bean>
+    
+    <bean id="employeeDao" class="com.three.dao.impl.EmployeeDaoImpl">
+    </bean>
+    
+    <bean id="employeeInfor" class="com.three.domain.impl.EmployeeInforImpl">
+        <property name="employeeDao" ref="employeeDao"/>
+    </bean>
+    
+    <bean id="TriptabAction" class="Action.TriptabAction"  scope="prototype" p:ms-ref="triptabService"/>     
+	<bean id="triptabService" class="Service.TriptabServiceImpl" p:founDao-ref="founDao"/>
+	<bean id="founDao" class="founDao.FounDaoImpl" />
+	
+	<bean id="ReimburseAction" class="Action.ReimburseAction"  scope="prototype" p:ms-ref="reimburseService"/>  
+	<bean id="reimburseService" class="Service.ReimburseServiceImpl" p:reimburseDao-ref="reimburseDao"/>
+    <bean id="reimburseDao" class="founDao.ReimburseDaoImpl" />
+    
+    <bean id = "dataSource"
+ 	    class="org.apache.commons.dbcp.BasicDataSource">
+ 	    <property name="url">
+ 	        <value>jdbc:mysql://localhost:3306/travelmanagement?useUnicode=true&amp;characterEncoding=UTF-8</value>
+ 	    </property>
+ 	    <property name="driverClassName">
+ 	        <value>com.mysql.jdbc.Driver</value>
+ 	    </property>
+ 	    <property name="username">
+ 	        <value>root</value>
+ 	    </property>
+ 	    <property name="password">
+ 	        <value>123456</value>	
+ 	    </property>
+ 	    
+ 	</bean>
+ 	
+ <!-- sessionFactory -->
+	<bean id="sessionFactory"
+	    class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+	    <!-- 给sessionFactory配置dataSource -->
+	    <property name="dataSource" ref="dataSource"></property>
+	    <!-- 配置hibernate方言 -->
+	    <property name="hibernateProperties">
+	        
+	        <props>
+	            <prop key="hibernate.show.sql">true</prop>
+	            <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+	            <prop key="hibernate.hbm2ddl.auto">update</prop>
+	            <prop key="hibernate.format_sql">true</prop>
+	            <prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext</prop>  
+                <!-- 最大抓取深度，如果为0，则关闭默认的外连接抓取。建议值为0-3 -->  
+                <prop key="hibernate.max_fetch_depth">1</prop>  
+                <!-- 用于生成有助于调试的注释信息，默认为关闭 -->  
+                <prop key="hibernate.use_sql_comments">false</prop>  
+	        </props>
+	    </property>
+	    <!-- 配置resource -->
+	  <!--    <property name="annotatedClasses">
+	        <list>
+	            <value>com.lds.entity.Budget</value>
+	            <value>com.lds.entity.Department</value>
+	            <value>com.lds.entity.Employee</value>
+	            <value>com.lds.entity.Finance_reimburse</value>
+	            <value>com.lds.entity.Login</value>
+	            <value>com.lds.entity.Other_expense</value>
+	            <value>com.lds.entity.Reimburse</value>
+	            <value>com.lds.entity.Trans</value>
+	            <value>com.lds.entity.Triptab</value>
+	        </list>
+	    </property>-->
+	    <!-- <property name="packagesToScan">-->
+	     <property name="annotatedClasses">
+	        <list>
+	           <value>com.lds.entity.Budget</value>
+	            <value>com.lds.entity.Department</value>
+	            <value>com.lds.entity.Employee</value>
+	            <value>com.lds.entity.Finance_reimburse</value>
+	            <value>com.lds.entity.Login</value>
+	            <value>com.lds.entity.Other_expense</value>
+	            <value>com.lds.entity.Reimburse</value>
+	            <value>com.lds.entity.Trans</value>
+	            <value>com.lds.entity.Triptab</value>
+	        </list>
+	    </property>
+	    
+	</bean>
+	
+	<bean id = "myTranManager"
+	    class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+	    <property name="sessionFactory" ref="sessionFactory"></property>
+	    
+	</bean>
+	 <aop:config>  
+        <aop:pointcut id="txMethod" expression="execution(* com.lds.dao.impl.*Impl.*(..))" />  
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txMethod"/>  
+    </aop:config> 
+    
+	 
+	 <tx:advice id="txAdvice" transaction-manager="myTranManager">  
+        <tx:attributes>  
+            <tx:method name="save*" propagation="REQUIRED"/> <!-- 支持当前事务，如果执行到save开头的任何方法时没有事务则开启一个事务 这是最常见的方式-->  
+            <tx:method name="update*" propagation="REQUIRED" /><!-- 支持当前事务，如果执行到save开头的任何方法时没有事务则开启一个事务 这是最常见的方式-->  
+            <tx:method name="add*" propagation="REQUIRED" /><!-- 支持当前事务，如果执行到save开头的任何方法时没有事务则开启一个事务 这是最常见的方式-->  
+            <tx:method name="delete*" propagation="REQUIRED" /><!-- 支持当前事务，如果执行到save开头的任何方法时没有事务则开启一个事务 这是最常见的方式-->  
+            <tx:method name="find*" propagation="REQUIRED" /> <!-- 支持当前事务，如果当前没有事务，就以非事务方式执行。只读 -->  
+            <tx:method name="get*" propagation="REQUIRED" /><!-- 支持当前事务，如果当前没有事务，就以非事务方式执行。只读 -->  
+            <tx:method name="*" />  
+        </tx:attributes>  
+    </tx:advice>  
+<!--  \	<tx:advice id="transationAdvice" 
+  	  transaction-manager="myTranManager">
+	<tx:attributes>
+	<tx:method name="*" propagation="REQUIRED" rollback-for="java.lang.Exception" />
+	</tx:attributes>
+	</tx:advice>
+	<tx:advice id="myTranManager">
+		<tx:attributes>-->
+		<!-- 所有以'get'开头的方法是read-only的 -->
+<!-- 		<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>-->
+ <bean name="budgetInterface" class="com.lds.dao.impl.BudgetImpl" >  
+        <property name="sessionFactory" ref="sessionFactory"></property>      
+   </bean>  
+   <bean name="finance_ReimburseInterface" class="com.lds.dao.impl.Finance_ReimburseImpl" > 
+       <property name="sessionFactory" ref="sessionFactory"></property>      
+   </bean> 
+   <bean name="budgetServiceInterface" class="com.lds.service.impl.BudgetServiceImpl" >        
+       <property name="budgetInterface" ref="budgetInterface"></property>
+   </bean>
+   <bean name="finance_reimburseServiceInterface" class="com.lds.service.impl.Finance_reimburseServiceImpl" >        
+       <property name="frs" ref="finance_ReimburseInterface"></property>
+       <property name="bi" ref="budgetInterface"></property>
+       <property name="baseInterface" ref="BaseInterface"></property>
+   </bean>
+   <bean  name="BaseInterface" class="com.lds.dao.impl.BaseImpl" >
+       <property name="sessionFactory" ref="sessionFactory"></property>         
+   </bean>
+	<bean id="LoginAction" name="LoginAction" class="com.lds.action.LoginAction">
+	    <property name="baseImpl" ref="BaseInterface"></property>
+	    <property name="budgetInterface" ref="budgetInterface"></property>
+	</bean> 
+	<bean id="ViewTriptabAction" name="ViewTriptabAction" class="com.lds.action.ViewTriptabAction">
+		<property name="baseImpl" ref="BaseInterface"></property>
+	</bean>    
+	<bean id="ViewBudgetAction" name="ViewBudgetAction" class="com.lds.action.ViewBudgetAction">
+	    <property name="budgetInterface" ref="budgetInterface"></property>
+	</bean>
+	<bean id="DealBudgetAction" name="DealBudgetAction" class="com.lds.action.DealBudgetAction">
+	    <property name="budgetInterface" ref="budgetInterface"></property>
+	</bean>
+	<bean id="ViewReimburseAction" name="ViewReimburseAction" class="com.lds.action.ViewReimburseAction">
+	    <property name="finance_reimburseServiceInterface" ref="finance_reimburseServiceInterface"></property>
+	    <property name="baseInterface" ref="BaseInterface"></property>
+	</bean>
+	<bean id="ViewDetailAction" name="ViewDetailAction" class="com.lds.action.ViewDetailAction">
+	    <property name="baseInterface" ref="BaseInterface"></property>
+	</bean>
+	<bean id="BackViewReimburseAction" name="BackViewReimburseAction" class="com.lds.action.BackViewReimburseAction">
+	    <property name="finance_reimburseServiceInterface" ref="finance_reimburseServiceInterface"></property>
+	    <property name="baseInterface" ref="BaseInterface"></property>
+	    <property name="budgetInterface" ref="budgetInterface"></property>
+	</bean>
+	<bean id="ViewFinanceAction" name="ViewFinanceAction" class="com.lds.action.ViewFinanceAction">
+	    <property name="finance_reimburseServiceInterface" ref="finance_reimburseServiceInterface"></property>
+	    <property name="baseInterface" ref="BaseInterface"></property>
+	    <property name="budgetInterface" ref="budgetInterface"></property>
+	</bean>
+	<bean id="SearchFinanceAction" name="SearchFinanceAction" class="com.lds.action.SearchFinanceAction">
+	    <property name="finance_reimburseServiceInterface" ref="finance_reimburseServiceInterface"></property>
+	    <property name="baseInterface" ref="BaseInterface"></property>
+	    <property name="budgetInterface" ref="budgetInterface"></property>
+	</bean>
+	<bean id="SearchForFinanceAction" name="SearchForFinanceAction" class="com.lds.action.SearchForFinanceAction">
+	    <property name="finance_reimburseServiceInterface" ref="finance_reimburseServiceInterface"></property>
+	    <property name="baseInterface" ref="BaseInterface"></property>
+	    <property name="budgetInterface" ref="budgetInterface"></property>
+	</bean>
+	<bean id="SearchTriptabAction" name="SearchTriptabAction" class="com.lds.action.SearchTriptabAction">
+	    <property name="finance_reimburseServiceInterface" ref="finance_reimburseServiceInterface"></property>
+	    <property name="baseInterface" ref="BaseInterface"></property>
+	    <property name="budgetInterface" ref="budgetInterface"></property>
+	</bean>
+	<bean id="SearchReimburseAction" name="SearchReimburseAction" class="com.lds.action.SearchReimburseAction">
+	    <property name="finance_reimburseServiceInterface" ref="finance_reimburseServiceInterface"></property>
+	    <property name="baseInterface" ref="BaseInterface"></property>
+	    <property name="budgetInterface" ref="budgetInterface"></property>
+	</bean>
+	<bean id="SearchTimeFinanceAction" name="SearchTimeFinanceAction" class="com.lds.action.SearchTimeFinanceAction">
+	    <property name="finance_reimburseServiceInterface" ref="finance_reimburseServiceInterface"></property>
+	    <property name="baseInterface" ref="BaseInterface"></property>
+	    <property name="budgetInterface" ref="budgetInterface"></property>
+	</bean>
+</beans>
